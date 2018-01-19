@@ -42,9 +42,9 @@ def getAWSInfo
       aws_metadata = open('http://169.254.169.254/2014-11-05/dynamic/instance-identity/document'){ |io| data = io.read }
       aws_JSON_Information = JSON.parse(aws_metadata)
       return "#{aws_JSON_Information['instanceId']}_#{aws_JSON_Information['region']}_#{aws_JSON_Information['accountId']}"
-    end
+  end
   rescue
-    Chef::Log.warn('Unable to get AWS instance ID, Timeout while reading')
+    Chef::Log.warn('Unable to get AWS instance ID, Timeout while reading') 
     return ''
   end
 end
@@ -70,7 +70,7 @@ def getHttpUri
   uri_items = Hash.new
   aws_infor = getAWSInfo
   if aws_infor != ''
-    puts uri_items['sfxdim_AWSUniqueId'] = aws_infor
+    puts uri_items['sfxdim_AWSUniqueId'] = aws_infor 
   end
 
   chefUniqueId = getChefUniqueId
@@ -92,7 +92,7 @@ def getHttpUri
   return ingesturl
 end
 
-# ensure collectd start
+# ensure collectd start 
 
 def start_collectd
   service 'collectd' do
@@ -103,9 +103,9 @@ end
 
 #install on centos
 
-def install_package_on_redhat( package_name, package_version)
+def install_package_on_redhat( package_name )
   if is_redhat_node?
-    install_package package_name, package_version
+    install_package package_name, node['package_version']
   end
 end
 
@@ -117,12 +117,11 @@ def install_package(package_name, package_version)
     end
   elsif is_redhat_node?
     yum_package package_name do
-      version package_version
       flush_cache( {:before=>true, :after=>false})
     end
   else
     package package_name
-  end
+  end  
 end
 
 
@@ -174,7 +173,7 @@ end
 def epel_release_for_redhat
   # RHEL doesn't support this in any simple way
   if %w(centos amazon).include? node['platform']
-    install_package_on_redhat 'epel-release',node['epel_version']
+    install_package_on_redhat 'epel-release' 
   elsif node['platform'] == 'redhat'
     remote_file "#{Chef::Config[:file_cache_path]}/epel-release.rpm" do
       source "https://dl.fedoraproject.org/pub/epel/epel-release-latest-#{node['platform_version'][0]}.noarch.rpm"

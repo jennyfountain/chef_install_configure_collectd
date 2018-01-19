@@ -31,9 +31,9 @@ end
 #
 def install_repo_rpms(os, version)
   unless node['SignalFx_rpm_repo'][os].include? version
-    raise ("Do not support your system #{node['platform']}_#{node['platform_version']}")
+    raise ("Do not support your system #{node['platform']}_#{node['platform_version']}") 
   end
-
+  
   install_single_rpm_repo(node['SignalFx_rpm_repo'][os][version]['SignalFx-repo'])
   install_single_rpm_repo(node['SignalFx_rpm_repo'][os][version]['SignalFx-Plugin-repo'])
 end
@@ -91,8 +91,8 @@ def install_in_debian
   signalfx_collectd_plugin_ppa_source = node['SignalFx_debian_ppa'][get_debian_os_name]['collectd_plugin']['uri']
   signalfx_keyid = node['SignalFx_debian_ppa']['keyid']
   execute 'add SignalFx PPA' do
-    command "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys #{signalfx_keyid} &&
-             echo #{collectd_ppa_source} > /etc/apt/sources.list.d/signalfx_collectd.list &&
+    command "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys #{signalfx_keyid} && 
+             echo #{collectd_ppa_source} > /etc/apt/sources.list.d/signalfx_collectd.list && 
              echo #{signalfx_collectd_plugin_ppa_source} > /etc/apt/sources.list.d/signalfx_collectd_plugin.list"
     action :run
   end
@@ -107,18 +107,18 @@ end
 
 SignalFx_Repo_Link = node['SignalFx_rpm_repo']['uri']
 case node['platform']
-  when 'redhat'
-    # Get the rhel integer version
-    install_in_redhat('rhel', node['platform_version'].to_i.to_s)
-  when 'centos'
-    # Get the centos integer version
-    install_in_redhat('centos', node['platform_version'].to_i.to_s)
-  when 'amazon'
-    install_in_redhat('amazon', 'all')
-  when 'ubuntu'
-    install_in_ubuntu
-  when 'debian'
-    install_in_debian
-  else
-    raise ("Do not support your system #{node['platform']}_#{node['platform_version']}")
+when 'redhat'
+  # Get the rhel integer version
+  install_in_redhat('rhel', node['platform_version'].to_i.to_s)
+when 'centos'
+  # Get the centos integer version
+  install_in_redhat('centos', node['platform_version'].to_i.to_s)
+when 'amazon'
+  install_in_redhat('amazon', 'all')
+when 'ubuntu'
+  install_in_ubuntu
+when 'debian'
+  install_in_debian
+else
+  raise ("Do not support your system #{node['platform']}_#{node['platform_version']}")
 end

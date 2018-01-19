@@ -20,11 +20,11 @@ ingesturl = getHttpUri
 template "#{node['collectd_managed_conf_folder']}/10-signalfx.conf" do
   source '10-signalfx.conf.erb'
   variables({
-                :INGEST_HOST => ingesturl,
-                :API_TOKEN => node['write_http']['API_TOKEN'],
-                :ENABLE_STATSD => node['SignalFx']['collectd']['enable_statsd'],
-                :STATSD_PORT => node['SignalFx']['collectd']['statsd_port']
-            })
+    :INGEST_HOST => ingesturl,
+    :API_TOKEN => node['write_http']['API_TOKEN'],
+    :ENABLE_STATSD => node['SignalFx']['collectd']['enable_statsd'],
+    :STATSD_PORT => node['SignalFx']['collectd']['statsd_port']
+  })
   notifies :restart, 'service[collectd]'
 end
 
