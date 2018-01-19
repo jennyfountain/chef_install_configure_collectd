@@ -6,11 +6,6 @@ def download_file(remote_link, local_location)
   end
 end
 
-def does_not_include_plugin?(item)
-  return true if 'item' !~ /'plugin'/
-  return false
-end
-
 # install rpms package
 
 def install_rpm_package(name, location)
@@ -108,25 +103,21 @@ end
 
 #install on centos
 
-def install_package_on_redhat( package_name )
+def install_package_on_redhat( package_name, package_version)
   if is_redhat_node?
-    install_package package_name
+    install_package package_name, package_version
   end
 end
 
-def install_package(package_name)
-  if package_name.include?('plugin') and node['collectd_version_plugin'] != 'latest'
+def install_package(package_name, package_version)
+  if node.include? 'collectd_version' and package_version != 'latest'
     package package_name do
-      version node['collectd_version_plugin']
-      action node['SignalFx']['collectd']['install_action']
-    end
-  elsif does_not_include_plugin?(package_name) == false and node['collectd_version'] != 'latest'
-    package package_name do
-      version node['collectd_version']
+      version package_version
       action node['SignalFx']['collectd']['install_action']
     end
   elsif is_redhat_node?
     yum_package package_name do
+      version package_version
       flush_cache( {:before=>true, :after=>false})
     end
   else
@@ -183,7 +174,7 @@ end
 def epel_release_for_redhat
   # RHEL doesn't support this in any simple way
   if %w(centos amazon).include? node['platform']
-    install_package_on_redhat 'epel-release'
+    install_package_on_redhat 'epel-release',node['epel_version']
   elsif node['platform'] == 'redhat'
     remote_file "#{Chef::Config[:file_cache_path]}/epel-release.rpm" do
       source "https://dl.fedoraproject.org/pub/epel/epel-release-latest-#{node['platform_version'][0]}.noarch.rpm"

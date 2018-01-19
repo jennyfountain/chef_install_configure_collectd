@@ -3,7 +3,8 @@ default['write_http']['Ingest_host'] = 'https://ingest.signalfx.com/v1/collectd'
 default['write_http']['API_TOKEN'] = ''
 
 default['collectd_version'] = 'latest'
-default['collectd_plugin_version'] = 'latest'
+default['collectd_version_plugin'] = 'latest'
+default['epel_version'] = 'latest'
 
 default['SignalFx']['collectd']['install_action'] = 'install'
 
@@ -20,12 +21,12 @@ default['SignalFx']['collectd']['enable_statsd'] = false
 default['SignalFx']['collectd']['statsd_port'] = 8125
 
 default['SignalFx']['collectd']['protocols']['values'] = [
-  "Icmp:InDestUnreachs",
-  "Tcp:CurrEstab",
-  "Tcp:OutSegs",
-  "Tcp:RetransSegs",
-  "TcpExt:DelayedACKs",
-  "TcpExt:DelayedACKs",
-  "/Tcp:.*Opens/",
-  "/^TcpExt:.*Octets/",
+    "Icmp:InDestUnreachs",
+    "Tcp:CurrEstab",
+    "Tcp:OutSegs",
+    "Tcp:RetransSegs",
+    "TcpExt:DelayedACKs",
+    "TcpExt:DelayedACKs",
+    "/Tcp:.*Opens/",
+    "/^TcpExt:.*Octets/",
 ]
