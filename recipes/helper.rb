@@ -105,15 +105,15 @@ end
 
 def install_package_on_redhat( package_name )
   if is_redhat_node?
-    install_package package_name, node['package_version']
+    install_package package_name, 'null', 'null'
   end
 end
 
-def install_package(package_name, package_version)
-  if node.include? 'collectd_version' and package_version != 'latest'
+def install_package(package_name, package_version, package_action )
+  if node.include? 'collectd_version' and package_version != 'latest' and package_version != 'null'
     package package_name do
       version package_version
-      action node['SignalFx']['collectd']['install_action']
+      action package_action
     end
   elsif is_redhat_node?
     yum_package package_name do
@@ -173,7 +173,7 @@ end
 def epel_release_for_redhat
   # RHEL doesn't support this in any simple way
   if %w(centos amazon).include? node['platform']
-    install_package_on_redhat 'epel-release' 
+    install_package_on_redhat 'epel-release'
   elsif node['platform'] == 'redhat'
     remote_file "#{Chef::Config[:file_cache_path]}/epel-release.rpm" do
       source "https://dl.fedoraproject.org/pub/epel/epel-release-latest-#{node['platform_version'][0]}.noarch.rpm"

@@ -4,9 +4,8 @@ default['write_http']['API_TOKEN'] = ''
 
 default['collectd_version'] = 'latest'
 default['collectd_version_plugin'] = 'latest'
-default['package_version'] = 'latest'
 
-default['SignalFx']['collectd']['install_action'] = 'install'
+default['SignalFx']['package_install_action'] = 'install'
 
 default['SignalFx']['collectd']['interval'] = 10
 default['SignalFx']['collectd']['timeout'] = 2

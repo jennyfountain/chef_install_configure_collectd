@@ -54,8 +54,8 @@ end
 
 def install_in_redhat(os, version)
   install_repo_rpms(os, version)
-  install_package 'collectd', node['collectd_version']
-  install_package 'collectd-disk', node['collectd_version']
+  install_package 'collectd', node['collectd_version'], node['SignalFx']['package_install_action']
+  install_package 'collectd-disk', node['collectd_version'], node['SignalFx']['package_install_action']
 end
 
 #
@@ -73,7 +73,7 @@ def install_in_ubuntu
   install_ppa(node['SignalFx_ppa']['collectd_plugin']['name'],
               node['SignalFx_ppa']['collectd_plugin']['uri'])
   ubuntu_update
-  install_package 'collectd', node['collectd_version']
+  install_package 'collectd', node['collectd_version'], node['SignalFx']['package_install_action']
 end
 
 #
@@ -97,7 +97,7 @@ def install_in_debian
     action :run
   end
   ubuntu_update
-  install_package 'collectd', node['collectd_version']
+  install_package 'collectd', node['collectd_version'], node['SignalFx']['package_install_action']
 end
 
 #

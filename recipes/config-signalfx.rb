@@ -13,7 +13,7 @@
 #require_relative './helper.rb'
 require File.expand_path("../helper.rb", __FILE__)
 
-install_package 'signalfx-collectd-plugin',  node['collectd_version_plugin']
+install_package 'signalfx-collectd-plugin',  node['collectd_version_plugin'], node['SignalFx']['package_install_action']
 
 ingesturl = getHttpUri
 
