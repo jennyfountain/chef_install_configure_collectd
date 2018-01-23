@@ -105,12 +105,12 @@ end
 
 def install_package_on_redhat( package_name )
   if is_redhat_node?
-    install_package package_name, 'null', 'null'
+    install_package package_name, nil, nil
   end
 end
 
 def install_package(package_name, package_version, package_action )
-  if node.include? 'collectd_version' and package_version != 'latest' and package_version != 'null'
+  if node.include? 'collectd_version' and package_version != 'latest' and package_version != nil
     package package_name do
       version package_version
       action package_action
